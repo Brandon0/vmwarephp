@@ -40,6 +40,13 @@ class Vhost {
 		$this->service = $service;
 	}
 
+	function close() {
+		if ($this->service) {
+			$this->service->getSessionManager()->closeSession();
+			$this->service = NULL;
+		}
+	}
+
 	private function initializeService() {
 		if (!$this->service)
 			$this->service = \Vmwarephp\Factory\Service::makeConnected($this);

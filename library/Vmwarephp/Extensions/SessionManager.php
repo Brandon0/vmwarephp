@@ -18,6 +18,14 @@ class SessionManager extends \Vmwarephp\ManagedObject {
 		return $this->session;
 	}
 
+	function closeSession() {
+		$this->Logout( );
+		$ticketFile = $this->getCloneTicketFile();
+		if (file_exists($ticketFile)) {
+			file_put_contents($ticketFile, '');
+		}
+	}
+
 	private function acquireSessionUsingCloneTicket() {
 		$cloneTicket = $this->readCloneTicket();
 		if (!$cloneTicket) {
