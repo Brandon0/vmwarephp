@@ -24,8 +24,13 @@ class Soap extends \Exception {
 
 	private function makeFaultDetailsString($soapFault) {
 		$faults = array();
-		foreach ($soapFault->detail as $fault) {
-			$faults[] = "{$fault->enc_stype}: " . print_r($fault->enc_value, true);
+		/* PHP may not always include the detail property with SoapFault
+		 * php bug #46792
+		 * */
+		if (isset($soapFault->detail)) {
+			foreach ($soapFault->detail as $fault) {
+				$faults[] = "{$fault->enc_stype}: " . print_r($fault->enc_value, true);
+			}
 		}
 		return count($faults) ? implode(', ', $faults) : '';
 	}
